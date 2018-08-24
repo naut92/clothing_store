@@ -1,0 +1,51 @@
+
+INSERT INTO Size_cl(size_num) values (42);
+INSERT INTO Size_cl(size_num) values (43);
+INSERT INTO Size_cl(size_num) values (44);
+INSERT INTO Size_cl(size_num) values (45);
+INSERT INTO Size_cl(size_num) values (46);
+INSERT INTO Size_cl(size_num) values (47);
+INSERT INTO Size_cl(size_num) values (48);
+INSERT INTO Size_cl(size_num) values (50);
+INSERT INTO Size_cl(size_num) values (52);
+
+INSERT INTO Color(col) VALUES ('white');
+INSERT INTO Color(col) VALUES ('blue');
+INSERT INTO Color(col) VALUES ('red');
+INSERT INTO Color(col) VALUES ('green');
+INSERT INTO Color(col) VALUES ('black');
+
+INSERT INTO Type_clothes(type_cl) VALUES ('dress');
+INSERT INTO Type_clothes(type_cl) VALUES ('pants');
+INSERT INTO Type_clothes(type_cl) VALUES ('skirt');
+INSERT INTO Type_clothes(type_cl) VALUES ('vest');
+INSERT INTO Type_clothes(type_cl) VALUES ('shirt');
+
+
+INSERT INTO store(clothes_name, available) VALUES ('clothes 1', true);
+INSERT INTO store(clothes_name, available) VALUES ('clothes 3', true);
+INSERT INTO store(clothes_name, available) VALUES ('clothes 5', true);
+INSERT INTO store(clothes_name, available) VALUES ('clothes 7', true);
+INSERT INTO store(clothes_name, available) VALUES ('clothes 2', false );
+INSERT INTO store(clothes_name, available) VALUES ('clothes 4', false );
+INSERT INTO store(clothes_name, available) VALUES ('clothes 6', false );
+INSERT INTO store(clothes_name, available) VALUES ('clothes 8', false );
+
+
+insert into stock(clothes_name, available) values ('clothes 2', true);
+insert into stock(clothes_name, available) values ('clothes 4', true);
+insert into stock(clothes_name, available) values ('clothes 6', true);
+insert into stock(clothes_name, available) values ('clothes 8', true);
+insert into stock(clothes_name, available) values ('clothes 1', false );
+insert into stock(clothes_name, available) values ('clothes 3', false );
+insert into stock(clothes_name, available) values ('clothes 5', false );
+insert into stock(clothes_name, available) values ('clothes 7', false );
+
+insert into clothes (name, size, cost, color, type, description, in_store, in_stock) values ('clothes 1', 42, 1009, 'red', 'dress', 'loren ipsum123', true, false);
+insert into clothes (name, size, cost, color, type, description, in_store, in_stock) values ('clothes 2', 43, 2100, 'black', 'pants', 'is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s', false, true );
+insert into clothes (name, size, cost, color, type, description, in_store, in_stock) values ('clothes 3', 44, 459, 'green', 'skirt', 'as opposed to using ''Content here, content here'', making it look like', true, false );
+insert into clothes (name, size, cost, color, type, description, in_store, in_stock) values ('clothes 4', 45, 768, 'blue', 'vest', 'web page editors now use Lorem Ipsum as their default model text,', false , true );
+insert into clothes (name, size, cost, color, type, description, in_store, in_stock) values ('clothes 5', 46, 891, 'white', 'shirt', 'and a search for ''lorem ipsum'' will uncover many web sites still in their infancy.', true, false );
+insert into clothes (name, size, cost, color, type, description, in_store, in_stock) values ('clothes 6', 50, 644, 'green', 'pants', 'sometimes by accident, sometimes on purpose (injected humour and the like).', false , true );
+insert into clothes (name, size, cost, color, type, description, in_store, in_stock) values ('clothes 7', 48, 571, 'blue', 'dress', 'Where can I get some? There are many variations of passages of Lorem Ipsum available, but the majority have suffered ', true, false );
+insert into clothes (name, size, cost, color, type, description, in_store, in_stock) values ('clothes 8', 52, 3381, 'red', 'shirt', 'All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.', false, true );
