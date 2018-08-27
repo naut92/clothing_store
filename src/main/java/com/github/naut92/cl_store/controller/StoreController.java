@@ -1,6 +1,6 @@
 package com.github.naut92.cl_store.controller;
 
-import com.github.naut92.cl_store.model.Store;
+import com.github.naut92.cl_store.model.ClothesInStoreOrInStock;
 import com.github.naut92.cl_store.service.StoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 @RestController
@@ -28,36 +28,39 @@ public class StoreController {
     }
 
     @GetMapping("/store")
-    public List<Store> getAllClothesInStore() {
+    public Collection<ClothesInStoreOrInStock> getAllClothesInStore() {
         return storeService.getAllClothesInStore();
     }
 
     @GetMapping("/store/{id}")
-    ResponseEntity<?> getClothes(@PathVariable Long id) {
-        Optional<Store> clothes = storeService.findById(id);
+    ResponseEntity<?> getClothesInStore(@PathVariable Long id) {
+        Optional<ClothesInStoreOrInStock> clothes = storeService.findByIdInStore(id);
         return clothes.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+
     @PostMapping("/store")
-    ResponseEntity<Store> createClothesInStore(@Valid @RequestBody Store clothes) throws URISyntaxException {
-        log.info("Request to create clothes in Store: {}", clothes);
-        Store result = storeService.save(clothes);
-        return ResponseEntity.created(new URI("/store/" + result.getId()))
+    ResponseEntity<ClothesInStoreOrInStock> createClothesInStore
+            (@Valid @RequestBody ClothesInStoreOrInStock clothesInStore) throws URISyntaxException {
+        log.info("Request to create clothes in StoreOrStock: {}", clothesInStore);
+        ClothesInStoreOrInStock result = storeService.saveInStore(clothesInStore);
+        return ResponseEntity.created(new URI("/stock/" + result.getId()))
                 .body(result);
     }
 
     @PutMapping("/store/{id}")
-    ResponseEntity<Store> updateClothesInStore(@PathVariable Long id, @Valid @RequestBody Store store) {
-        store.setId(id);
-        log.info("Request to update clothes in Store: {}", store);
-        Store result = storeService.save(store);
+    ResponseEntity<ClothesInStoreOrInStock> updateClothesInStore
+            (@PathVariable Long id, @Valid @RequestBody ClothesInStoreOrInStock clothesInStore) {
+        clothesInStore.setId(id);
+        log.info("Request to update clothes in StoreOrStock: {}", clothesInStore);
+        ClothesInStoreOrInStock result = storeService.saveInStore(clothesInStore);
         return ResponseEntity.ok().body(result);
     }
 
     @DeleteMapping("/store/{id}")
     public ResponseEntity<?> deleteClothesInStore(@PathVariable Long id) {
-        log.info("Request to delete clothes in Store: {}", id);
+        log.info("Request to delete clothes in StoreOrStock: {}", id);
         storeService.deleteById(id);
         return ResponseEntity.ok().build();
     }

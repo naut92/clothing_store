@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 
-class StoreEdit extends Component {
+class StockEdit extends Component {
 
     emptyItem = {
         name: '',
@@ -25,8 +25,8 @@ class StoreEdit extends Component {
 
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const store = await (await fetch(`/api/store/${this.props.match.params.id}`)).json();
-            this.setState({item: store});
+            const stock = await (await fetch(`/api/stock/${this.props.match.params.id}`)).json();
+            this.setState({item: stock});
         }
     }
 
@@ -77,8 +77,8 @@ class StoreEdit extends Component {
                     </FormGroup>
                     <FormGroup>
                         <Label for="cost">Цена</Label><Input type="text" name="cost" id="cost"
-                               value={item.cost || ''}
-                               onChange={this.handleChange} autoComplete="cost"/>
+                                                             value={item.cost || ''}
+                                                             onChange={this.handleChange} autoComplete="cost"/>
                     </FormGroup>
                     <div className="row">
                         <FormGroup className="col-md-4 mb-3">
@@ -102,7 +102,7 @@ class StoreEdit extends Component {
                     </div>
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}
-                        <Button color="secondary" tag={Link} to="/store">Cancel</Button>
+                        <Button color="secondary" tag={Link} to="/stock">Cancel</Button>
                     </FormGroup>
                 </Form>
             </Container>
@@ -110,4 +110,4 @@ class StoreEdit extends Component {
     }
 }
 
-export default withRouter(StoreEdit);
+export default withRouter(StockEdit);

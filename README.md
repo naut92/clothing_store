@@ -1,5 +1,5 @@
 # clothing_store
-Spring Boot, REST api, JPA, H2, React app
+Spring Boot, REST api, JPA, H2, ReactJS -app
 
 Start project.
 

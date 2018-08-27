@@ -11,8 +11,8 @@ import java.util.Collection;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "clothes_store")
-public class ClothesInStore implements Serializable {
+@Table(name = "clothes")
+public class ClothesInStoreOrInStock implements Serializable {
     private static final long serialVersionUID = 5124000706092599751L;
 
     @Id
@@ -41,11 +41,28 @@ public class ClothesInStore implements Serializable {
     @Basic
     @Column(name = "description")
     private String description;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "clothes_all",
+     //foreign key for ClothesInStoreOrInStockRepository Entity in clothes_all table
+     joinColumns = @JoinColumn(name = "clothes_id"),
+      //foreign key for other side - StoreOrStock Entity in clothes_all table
+     inverseJoinColumns = @JoinColumn(name = "store_stok_id"))
+     private Collection<StoreOrStock> clothesByStoreOrStock;
+
+
+
+
+
+
+
+
     //@Basic
-    //@Column(clothesName = "in_store")
+    //@Column(name = "in_store")
     //private Boolean inStore;
     //@Basic
-    //@Column(clothesName = "in_stock")
+    //@Column(name = "in_stock")
     //private Boolean inStock;
 
 
@@ -58,11 +75,13 @@ public class ClothesInStore implements Serializable {
     //@OneToMany(mappedBy = "clothesByType")
     //private Collection<Type> clothesByType;
 
-//*
+
+
+/*
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    private Store storeByClothes;
+    private StoreOrStock storeOrStockByClothes;
 
     /*
     @JsonIgnore

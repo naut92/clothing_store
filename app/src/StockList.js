@@ -3,60 +3,60 @@ import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link } from 'react-router-dom';
 
-class StoreList extends Component {
+class StockList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {store: [], isLoading: true};
+        this.state = {stock: [], isLoading: true};
         this.remove = this.remove.bind(this);
     }
 
     componentDidMount() {
         this.setState({isLoading: true});
 
-        fetch('api/store')
+        fetch('api/stock')
             .then(response => response.json())
-            .then(data => this.setState({store: data, isLoading: false}));
+            .then(data => this.setState({stock: data, isLoading: false}));
     }
 
     async remove(id) {
-        await fetch(`/api/store/${id}`, {
+        await fetch(`/api/stock/${id}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         }).then(() => {
-            let updatedStore = [...this.state.store].filter(i => i.id !== id);
-            this.setState({store: updatedStore});
+            let updatedStore = [...this.state.stock].filter(i => i.id !== id);
+            this.setState({stock: updatedStore});
         });
     }
 
     render() {
-        const {store, isLoading} = this.state;
+        const {stock, isLoading} = this.state;
 
         if (isLoading) {
             return <p>Loading...</p>;
         }
 
-        const storeList = store.map(clothes =>
+        const storeList = stock.map(clothes =>
             <tr key={clothes.id}>
                 <td style={{whiteSpace: 'nowrap'}}>{clothes.name}</td>
 
                 <td>
-                     <div key={clothes.id}>
+                    <div key={clothes.id}>
                         {'вид одежды: ' + clothes.type + ', '}
-                    {'размер: ' + clothes.size + ', '}
-                    {'цена: ' + clothes.cost + ', '}
-                    {'цвет: ' + clothes.color + '. '}</div>
+                        {'размер: ' + clothes.size + ', '}
+                        {'цена: ' + clothes.cost + ', '}
+                        {'цвет: ' + clothes.color + '. '}</div>
                 </td>
                 <td>
-                     <div key={clothes.id}>
+                    <div key={clothes.id}>
                         {' ' + clothes.description + '.'}</div>
                 </td>
                 <td>
                     <ButtonGroup>
-                        <Button size="sm" color="primary" tag={Link} to={"/store/" + clothes.id}>Edit</Button>
+                        <Button size="sm" color="primary" tag={Link} to={"/stock/" + clothes.id}>Edit</Button>
                         <Button size="sm" color="danger" onClick={() => this.remove(clothes.id)}>Delete</Button>
                     </ButtonGroup>
                 </td>
@@ -67,9 +67,9 @@ class StoreList extends Component {
                 <AppNavbar/>
                 <Container fluid>
                     <div className="float-right">
-                        <Button color="success" tag={Link} to="/store/new">Добавить одежду</Button>
+                        <Button color="success" tag={Link} to="/stock/new">Добавить одежду</Button>
                     </div>
-                    <h3>Магазин</h3>
+                    <h3>Склад</h3>
                     <Table className="mt-4">
                         <thead>
                         <tr>
@@ -89,4 +89,4 @@ class StoreList extends Component {
     }
 }
 
-export default StoreList;
+export default StockList;
