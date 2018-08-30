@@ -6,10 +6,13 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
-@Data
+//@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "store_or_stock", schema = "public", catalog = "cl_store")
 public class StoreOrStock implements Serializable {
@@ -23,12 +26,7 @@ public class StoreOrStock implements Serializable {
     @Basic
     @Column(name = "store_stock")
     private String storeOrStock;
-/*
-    @Basic
-    @Column(name = "clothes_name")
-    private String clothesName;
-*/
-    //@JsonIgnore
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "clothes_all",
      //foreign key for StoreOrStock Entity in clothes_all table
@@ -36,13 +34,4 @@ public class StoreOrStock implements Serializable {
      //foreign key for other side - ClothesInStoreOrInStockRepository Entity in clothes_all table
      inverseJoinColumns = @JoinColumn(name = "clothes_id"))
      private Collection<ClothesInStoreOrInStock> storeOrStockByClothes;
-
-    /*
-    //@Basic
-    //@Column(name = "available")
-    //private Boolean available;
-
-    @OneToMany(mappedBy = "storeOrStockByClothes")
-    private Collection<ClothesInStoreOrInStockRepository> storeOrStockByClothes;
-    */
 }

@@ -27,8 +27,8 @@ class StockList extends Component {
                 'Content-Type': 'application/json'
             }
         }).then(() => {
-            let updatedStore = [...this.state.stock].filter(i => i.id !== id);
-            this.setState({stock: updatedStore});
+            let updatedStock = [...this.state.stock].filter(i => i.id !== id);
+            this.setState({stock: updatedStock});
         });
     }
 
@@ -39,15 +39,17 @@ class StockList extends Component {
             return <p>Loading...</p>;
         }
 
-        const storeList = stock.map(clothes =>
-            <tr key={clothes.id}>
-                <td style={{whiteSpace: 'nowrap'}}>{clothes.name}</td>
+        const stockList = stock.map(clothes => {
+            return <tr key={clothes.id}>
+                <td style={{whiteSpace: 'nowrap'}}><p key={clothes.id}>
+                    {clothes.name}</p>
+                </td>
 
                 <td>
                     <div key={clothes.id}>
-                        {'вид одежды: ' + clothes.type + ', '}
-                        {'размер: ' + clothes.size + ', '}
-                        {'цена: ' + clothes.cost + ', '}
+                        {'вид одежды: ' + clothes.type + ', '}<br/>
+                        {'размер: ' + clothes.size + ', '}<br/>
+                        {'цена: ' + clothes.cost + ', '}<br/>
                         {'цвет: ' + clothes.color + '. '}</div>
                 </td>
                 <td>
@@ -60,7 +62,8 @@ class StockList extends Component {
                         <Button size="sm" color="danger" onClick={() => this.remove(clothes.id)}>Delete</Button>
                     </ButtonGroup>
                 </td>
-            </tr>);
+            </tr>
+        });
 
         return (
             <div>
@@ -80,7 +83,7 @@ class StockList extends Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {storeList}
+                        {stockList}
                         </tbody>
                     </Table>
                 </Container>

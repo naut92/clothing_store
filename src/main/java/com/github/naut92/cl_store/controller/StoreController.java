@@ -1,10 +1,15 @@
 package com.github.naut92.cl_store.controller;
 
 import com.github.naut92.cl_store.model.ClothesInStoreOrInStock;
+import com.github.naut92.cl_store.model.StoreOrStock;
+import com.github.naut92.cl_store.repository.ClothesInStoreOrInStockRepository;
+import com.github.naut92.cl_store.repository.StoreAndStockRepository;
+import com.github.naut92.cl_store.service.ClothesService;
 import com.github.naut92.cl_store.service.StoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +29,16 @@ public class StoreController {
     @Autowired
     StoreService storeService;
 
-    public StoreController(StoreService storeService) {this.storeService = storeService;
+    @Autowired
+    ClothesService clothesService;
+
+    public StoreController(StoreService storeService, ClothesService clothesService) {
+        this.storeService = storeService;
+        this.clothesService = clothesService;
     }
 
     @GetMapping("/store")
-    public Collection<ClothesInStoreOrInStock> getAllClothesInStore() {
+    public Collection<ClothesInStoreOrInStock> getAllClothesInStore(){
         return storeService.getAllClothesInStore();
     }
 
@@ -39,29 +49,32 @@ public class StoreController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-
     @PostMapping("/store")
     ResponseEntity<ClothesInStoreOrInStock> createClothesInStore
-            (@Valid @RequestBody ClothesInStoreOrInStock clothesInStore) throws URISyntaxException {
+    (@Valid @RequestBody ClothesInStoreOrInStock clothesInStore) throws URISyntaxException {
         log.info("Request to create clothes in StoreOrStock: {}", clothesInStore);
-        ClothesInStoreOrInStock result = storeService.saveInStore(clothesInStore);
-        return ResponseEntity.created(new URI("/stock/" + result.getId()))
+        ClothesInStoreOrInStock result = storeService.createClothesInStore(clothesInStore);
+        return ResponseEntity.created(new URI("/store/" + result.getId()))
                 .body(result);
     }
 
     @PutMapping("/store/{id}")
-    ResponseEntity<ClothesInStoreOrInStock> updateClothesInStore
+    ResponseEntity <ClothesInStoreOrInStock> updateClothesInStore
             (@PathVariable Long id, @Valid @RequestBody ClothesInStoreOrInStock clothesInStore) {
         clothesInStore.setId(id);
         log.info("Request to update clothes in StoreOrStock: {}", clothesInStore);
-        ClothesInStoreOrInStock result = storeService.saveInStore(clothesInStore);
+        ClothesInStoreOrInStock result = storeService.updateClothesInStore(clothesInStore);
         return ResponseEntity.ok().body(result);
     }
 
     @DeleteMapping("/store/{id}")
     public ResponseEntity<?> deleteClothesInStore(@PathVariable Long id) {
-        log.info("Request to delete clothes in StoreOrStock: {}", id);
-        storeService.deleteById(id);
+        log.info("Request to delete clothes in Store: {}", id);
+        try {
+            clothesService.deleteById(id);
+        }catch (EmptyResultDataAccessException ex) {
+            // either do nothing to return a 204
+        }
         return ResponseEntity.ok().build();
     }
 }

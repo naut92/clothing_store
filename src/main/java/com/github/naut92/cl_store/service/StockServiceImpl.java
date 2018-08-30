@@ -7,6 +7,7 @@ import com.github.naut92.cl_store.repository.StoreAndStockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,47 +18,55 @@ public class StockServiceImpl implements StockService{
     @Autowired
     StoreAndStockRepository storeAndStockRepository;
     @Autowired
-    ClothesInStoreOrInStockRepository clothesInStoreOrInStockRepository;
+    ClothesInStoreOrInStockRepository clothesRepository;
+
+    public StockServiceImpl(StoreAndStockRepository storeAndStockRepository,
+                            ClothesInStoreOrInStockRepository clothesInStoreOrInStockRepository) {
+        this.storeAndStockRepository = storeAndStockRepository;
+        this.clothesRepository = clothesInStoreOrInStockRepository;
+    }
 
     @Override
-    public Collection<ClothesInStoreOrInStock> getAllClothesInStock() {
+    public List<ClothesInStoreOrInStock> getAllClothesInStock() {
         Collection<StoreOrStock> collection = storeAndStockRepository.findAll();
         List<StoreOrStock> stockList = new ArrayList<>();
+        //sort entities related by store:
         for (StoreOrStock storeOrStock : collection){
             if (!storeOrStock.getStoreOrStock().isEmpty() && storeOrStock.getStoreOrStock().equals("stock")) {
                 stockList.add(storeOrStock);
             }
         }
-        //return stockList.get(0);
-        return stockList.get(0).getStoreOrStockByClothes();
+
+        List<ClothesInStoreOrInStock> clothes = new ArrayList<>();
+        for (StoreOrStock store : stockList){
+            for (ClothesInStoreOrInStock storeOrInStock : store.getStoreOrStockByClothes()){
+                clothes.add(storeOrInStock);
+            }
+        }
+        return clothes;
     }
 
     @Override
     public Optional<ClothesInStoreOrInStock> findByIdInStock(Long id) {
-        Collection<StoreOrStock> collection = storeAndStockRepository.findAll();
-        List<StoreOrStock> stockList = new ArrayList<>();
-        for (StoreOrStock storeOrStock : collection){
-            if (!storeOrStock.getStoreOrStock().isEmpty() && storeOrStock.getStoreOrStock().equals("stock")) {
-                stockList.add(storeOrStock);
+        Optional<ClothesInStoreOrInStock> clothesInStock = clothesRepository.findById(id);
+        if(clothesInStock.isPresent()){
+            for (StoreOrStock storeOrStock : clothesInStock.get().getClothesByStoreOrStock()){
+                if(storeOrStock.getStoreOrStock().equals("stock")){
+                    return clothesInStock;
+                }
             }
-        }
-        ClothesInStoreOrInStock storeOrInStock = new ClothesInStoreOrInStock();
-        for (ClothesInStoreOrInStock inStock : stockList.get(0).getStoreOrStockByClothes()){
-            if(id.equals(inStock.getId())){
-                storeOrInStock = inStock;
-
-            }
-        }
-        return Optional.ofNullable(storeOrInStock);
+        } else throw new EntityNotFoundException();
+        return Optional.of(new ClothesInStoreOrInStock());
     }
 
     @Override
-    public ClothesInStoreOrInStock saveInStock(ClothesInStoreOrInStock clothesInStock) {
-        return clothesInStoreOrInStockRepository.save(clothesInStock);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        storeAndStockRepository.deleteById(id);
+    public ClothesInStoreOrInStock createClothesInStock(ClothesInStoreOrInStock clothesInStock) {
+        StoreOrStock storeOrStock = new StoreOrStock();
+        Collection<ClothesInStoreOrInStock> collectionClothes = new ArrayList<>();
+        collectionClothes.add(clothesInStock);
+        storeOrStock.setStoreOrStock("stock");
+        storeOrStock.setStoreOrStockByClothes(collectionClothes);
+        storeAndStockRepository.save(storeOrStock);
+        return clothesRepository.save(clothesInStock);
     }
 }

@@ -1,10 +1,12 @@
 package com.github.naut92.cl_store.controller;
 
 import com.github.naut92.cl_store.model.ClothesInStoreOrInStock;
+import com.github.naut92.cl_store.service.ClothesService;
 import com.github.naut92.cl_store.service.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +24,17 @@ public class StockController {
 
     @Autowired
     StockService stockService;
+    @Autowired
+    ClothesService clothesService;
 
-    public StockController(StockService stockService) {
+    public StockController(StockService stockService, ClothesService clothesService) {
         this.stockService = stockService;
+        this.clothesService = clothesService;
     }
 
+
     @GetMapping("/stock")
-    public Collection<ClothesInStoreOrInStock> getAllClothesInStock() {
+    public Collection<ClothesInStoreOrInStock> getAllClothesInStock(){
         return stockService.getAllClothesInStock();
     }
 
@@ -42,8 +48,8 @@ public class StockController {
     @PostMapping("/stock")
     ResponseEntity<ClothesInStoreOrInStock> createClothesInStock
             (@Valid @RequestBody ClothesInStoreOrInStock clothesInStock) throws URISyntaxException {
-        log.info("Request to create clothes in Stock: {}", clothesInStock);
-        ClothesInStoreOrInStock result = stockService.saveInStock(clothesInStock);
+        log.info("Request to create clothes in StoreOrStock: {}", clothesInStock);
+        ClothesInStoreOrInStock result = stockService.createClothesInStock(clothesInStock);
         return ResponseEntity.created(new URI("/stock/" + result.getId()))
                 .body(result);
     }
@@ -53,14 +59,18 @@ public class StockController {
             (@PathVariable Long id, @Valid @RequestBody ClothesInStoreOrInStock clothesInStock) {
         clothesInStock.setId(id);
         log.info("Request to update clothes in Stock: {}", clothesInStock);
-        ClothesInStoreOrInStock result = stockService.saveInStock(clothesInStock);
+        ClothesInStoreOrInStock result = stockService.createClothesInStock(clothesInStock);
         return ResponseEntity.ok().body(result);
     }
 
     @DeleteMapping("/stock/{id}")
-    public ResponseEntity<?> deleteClothesInStock(@PathVariable Long id) {
+    public ResponseEntity<?> deleteClothesInStock (@PathVariable Long id) {
         log.info("Request to delete clothes in Stock: {}", id);
-        stockService.deleteById(id);
+        try {
+            clothesService.deleteById(id);
+        }catch (EmptyResultDataAccessException ex) {
+            // either do nothing to return a 204
+        }
         return ResponseEntity.ok().build();
     }
 }

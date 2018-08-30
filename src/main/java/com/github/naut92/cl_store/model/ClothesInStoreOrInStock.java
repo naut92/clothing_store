@@ -6,11 +6,15 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
-@Data
+//@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Table(name = "clothes")
 public class ClothesInStoreOrInStock implements Serializable {
     private static final long serialVersionUID = 5124000706092599751L;
@@ -29,15 +33,11 @@ public class ClothesInStoreOrInStock implements Serializable {
     @Column(name = "cost")
     private String cost;
     @Basic
-    @Column(name = "color", columnDefinition="enum('white', 'blue', 'red', 'green', 'black')")
-    //@Column(name = "color")
-    @Enumerated(EnumType.STRING)
-    private Color color;
+    @Column(name = "color")
+    private String color;
     @Basic
-    @Column(name = "type", columnDefinition="enum('dress', 'pants', 'skirt', 'vest', 'shirt')")
-    //@Column(name = "type")
-    @Enumerated(EnumType.STRING)
-    private TypeClothes type;
+    @Column(name = "type")
+    private String type;
     @Basic
     @Column(name = "description")
     private String description;
@@ -50,21 +50,6 @@ public class ClothesInStoreOrInStock implements Serializable {
       //foreign key for other side - StoreOrStock Entity in clothes_all table
      inverseJoinColumns = @JoinColumn(name = "store_stok_id"))
      private Collection<StoreOrStock> clothesByStoreOrStock;
-
-
-
-
-
-
-
-
-    //@Basic
-    //@Column(name = "in_store")
-    //private Boolean inStore;
-    //@Basic
-    //@Column(name = "in_stock")
-    //private Boolean inStock;
-
 
     //@OneToMany(mappedBy = "clothesBySize")
     //private Collection<Size> clothesBySize;

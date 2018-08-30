@@ -39,19 +39,20 @@ class StoreList extends Component {
             return <p>Loading...</p>;
         }
 
-        const storeList = store.map(clothes =>
-            <tr key={clothes.id}>
-                <td style={{whiteSpace: 'nowrap'}}>{clothes.name}</td>
-
-                <td>
-                     <div key={clothes.id}>
-                        {'вид одежды: ' + clothes.type + ', '}
-                    {'размер: ' + clothes.size + ', '}
-                    {'цена: ' + clothes.cost + ', '}
-                    {'цвет: ' + clothes.color + '. '}</div>
+        const storeList = store.map(clothes => {
+            return <tr key={clothes.id}>
+                <td style={{whiteSpace: 'nowrap'}}> <p key={clothes.id}>
+                    {clothes.name}</p>
                 </td>
                 <td>
-                     <div key={clothes.id}>
+                    <div key={clothes.id}>
+                        {'вид одежды: ' + clothes.type + ', '}<br/>
+                        {'размер: ' + clothes.size + ', '}<br/>
+                        {'цена: ' + clothes.cost + ', '}<br/>
+                        {'цвет: ' + clothes.color + '. '}</div>
+                </td>
+                <td>
+                    <div key={clothes.id}>
                         {' ' + clothes.description + '.'}</div>
                 </td>
                 <td>
@@ -60,7 +61,8 @@ class StoreList extends Component {
                         <Button size="sm" color="danger" onClick={() => this.remove(clothes.id)}>Delete</Button>
                     </ButtonGroup>
                 </td>
-            </tr>);
+            </tr>
+        });
 
         return (
             <div>
