@@ -11,5 +11,5 @@ public interface StoreService {
     Collection<ClothesInStoreOrInStock> getAllClothesInStore();
     Optional<ClothesInStoreOrInStock> findByIdInStore(Long id);
     ClothesInStoreOrInStock createClothesInStore(ClothesInStoreOrInStock clothesInStoreOrInStock);
-    ClothesInStoreOrInStock updateClothesInStore(ClothesInStoreOrInStock clothesInStore);
+    ClothesInStoreOrInStock updateClothesInStore(Long id, ClothesInStoreOrInStock clothesInStore);
 }

@@ -1,5 +1,6 @@
 package com.github.naut92.cl_store.service;
 
+import com.github.naut92.cl_store.initdatatest.AbstractInitDataTest;
 import com.github.naut92.cl_store.model.ClothesInStoreOrInStock;
 import com.github.naut92.cl_store.model.StoreOrStock;
 import com.github.naut92.cl_store.repository.ClothesInStoreOrInStockRepository;
@@ -16,7 +17,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.when;
 
-public class StoreServiceImplTest {
+
+public class StoreServiceImplTest extends AbstractInitDataTest {
 
     @Mock
     private StoreAndStockRepository storeAndStockRepository;
@@ -28,7 +30,7 @@ public class StoreServiceImplTest {
 
     @Before
     public void init() {
-       // storeService = new StoreServiceImpl(storeAndStockRepository);
+       storeService = new StoreServiceImpl(storeAndStockRepository, clothesInStoreOrInStockRepository);
     }
 
     @Before
@@ -70,13 +72,13 @@ public class StoreServiceImplTest {
                 44l, "1руб.", "black", "pants", "bla-bla-bla", collectionStore);
         ClothesInStoreOrInStock second = new ClothesInStoreOrInStock(2l,"second",
                 52l, "3333руб.", "white", "dress", "mu-mu-mu-mu", collectionStore);
-        when(clothesInStoreOrInStockRepository.save(notNull(ClothesInStoreOrInStock.class))).thenReturn(first).thenReturn(second);
+        when(storeService.createClothesInStore(notNull(ClothesInStoreOrInStock.class))).thenReturn(first).thenReturn(second);
 
 
         collectionClothes.add(first);
         storeOrStock.setStoreOrStockByClothes(collectionClothes);
         when(storeAndStockRepository.save(notNull(StoreOrStock.class))).thenReturn(storeOrStock);
-        //assertEquals(storeService.updateClothesInStore(1L, storeOrStock), hasItems(storeOrStock.getStoreOrStockByClothes().equals(first)));
+        assertEquals(storeService.updateClothesInStore(1L, first), hasItems(storeOrStock.getStoreOrStockByClothes().equals(first)));
     }
 
     @Test

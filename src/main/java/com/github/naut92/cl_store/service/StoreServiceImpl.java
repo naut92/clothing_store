@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StoreServiceImpl implements StoreService{
@@ -28,20 +26,18 @@ public class StoreServiceImpl implements StoreService{
 
 
     @Override
-    public List<ClothesInStoreOrInStock> getAllClothesInStore() {
+    public Collection<ClothesInStoreOrInStock> getAllClothesInStore() {
         Collection<StoreOrStock> collection = storeAndStockRepository.findAll();
-        List<StoreOrStock> storeList = new ArrayList<>();
-        //sort entities related by store:
-        for (StoreOrStock storeOrStock : collection){
-            if (!storeOrStock.getStoreOrStock().isEmpty() && storeOrStock.getStoreOrStock().equals("store")) {
-                storeList.add(storeOrStock);
-            }
-        }
 
-        List<ClothesInStoreOrInStock> clothes = new ArrayList<>();
+        //sort entities related by store:
+        List<StoreOrStock> storeList = collection.stream()
+                .filter(store -> store.getStoreOrStock().contains("store"))
+                .collect(Collectors.toList());
+
+        Collection<ClothesInStoreOrInStock> clothes = new ArrayList<>();
         for (StoreOrStock store : storeList){
             for (ClothesInStoreOrInStock storeOrInStock : store.getStoreOrStockByClothes()){
-                clothes.add(storeOrInStock);
+                clothes.addAll(Collections.singleton(storeOrInStock));
             }
         }
         return clothes;
@@ -72,30 +68,17 @@ public class StoreServiceImpl implements StoreService{
     }
 
     @Override
-    public ClothesInStoreOrInStock updateClothesInStore(ClothesInStoreOrInStock clothesInStore) {
-        StoreOrStock storeOrStock = new StoreOrStock();
+    public ClothesInStoreOrInStock updateClothesInStore(Long id, ClothesInStoreOrInStock clothesInStore) {
+        Optional<StoreOrStock> storeOrStock = storeAndStockRepository.findById(id);
         Collection<ClothesInStoreOrInStock> collectionClothes = new ArrayList<>();
-        collectionClothes.add(clothesInStore);
-        storeOrStock.setStoreOrStock("store");
-        storeOrStock.setStoreOrStockByClothes(collectionClothes);
-        storeAndStockRepository.save(storeOrStock);
+        if(storeOrStock.isPresent()){
+            clothesInStore.setId(id);
+            storeOrStock.get().setId(id);
+            collectionClothes.add(clothesInStore);
+            storeOrStock.get().setStoreOrStock("store");
+            storeOrStock.get().setStoreOrStockByClothes(collectionClothes);
+            storeAndStockRepository.save(storeOrStock.get());
+        }
         return clothesInStoreOrInStockRepository.save(clothesInStore);
     }
-/*
-    @Override
-    public Optional<StoreOrStock> updateInStore(Long id, ClothesInStoreOrInStock clothesInStore) {
-        Optional<StoreOrStock> oPstoreOrStock = storeAndStockRepository.findById(id);
-        ClothesInStoreOrInStock clothes;
-        StoreOrStock storeOrStock = new StoreOrStock();
-        StoreOrStock uPdatestoreOrStock;
-        if(oPstoreOrStock.isPresent()){
-            clothes = clothesInStoreOrInStockRepository.save(clothesInStore);
-            storeOrStock.getStoreOrStockByClothes().add(clothes);
-            uPdatestoreOrStock = storeAndStockRepository.save(storeOrStock);
-            return Optional.ofNullable(uPdatestoreOrStock);
-        }else {
-            return Optional.of(new StoreOrStock());
-        }
-    }
-    */
 }

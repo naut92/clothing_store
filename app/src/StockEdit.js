@@ -43,7 +43,7 @@ class StockEdit extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('/api/stock', {
+        await fetch((item.id) ? '/api/stock/'+(item.id) : '/api/stock', {
             method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',

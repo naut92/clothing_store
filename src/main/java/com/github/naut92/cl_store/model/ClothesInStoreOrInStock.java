@@ -6,15 +6,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
-//@Data
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Table(name = "clothes")
 public class ClothesInStoreOrInStock implements Serializable {
     private static final long serialVersionUID = 5124000706092599751L;

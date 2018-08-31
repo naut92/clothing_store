@@ -1,9 +1,7 @@
 package com.github.naut92.cl_store.controller;
 
 import com.github.naut92.cl_store.model.ClothesInStoreOrInStock;
-import com.github.naut92.cl_store.model.StoreOrStock;
 import com.github.naut92.cl_store.repository.ClothesInStoreOrInStockRepository;
-import com.github.naut92.cl_store.repository.StoreAndStockRepository;
 import com.github.naut92.cl_store.service.ClothesService;
 import com.github.naut92.cl_store.service.StoreService;
 import org.slf4j.Logger;
@@ -61,9 +59,8 @@ public class StoreController {
     @PutMapping("/store/{id}")
     ResponseEntity <ClothesInStoreOrInStock> updateClothesInStore
             (@PathVariable Long id, @Valid @RequestBody ClothesInStoreOrInStock clothesInStore) {
-        clothesInStore.setId(id);
         log.info("Request to update clothes in StoreOrStock: {}", clothesInStore);
-        ClothesInStoreOrInStock result = storeService.updateClothesInStore(clothesInStore);
+        ClothesInStoreOrInStock result = storeService.updateClothesInStore(id, clothesInStore);
         return ResponseEntity.ok().body(result);
     }
 

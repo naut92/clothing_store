@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StockService {
-    List<ClothesInStoreOrInStock> getAllClothesInStock();
+    Collection<ClothesInStoreOrInStock> getAllClothesInStock();
     Optional<ClothesInStoreOrInStock> findByIdInStock(Long id);
     ClothesInStoreOrInStock createClothesInStock (ClothesInStoreOrInStock stock);
+    ClothesInStoreOrInStock updateClothesInStock(Long id, ClothesInStoreOrInStock clothesInStock);
 }

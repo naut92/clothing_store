@@ -1,18 +1,14 @@
 package com.github.naut92.cl_store.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
-//@Data
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "store_or_stock", schema = "public", catalog = "cl_store")
 public class StoreOrStock implements Serializable {

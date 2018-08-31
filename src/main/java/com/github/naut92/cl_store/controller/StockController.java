@@ -55,11 +55,10 @@ public class StockController {
     }
 
     @PutMapping("/stock/{id}")
-    ResponseEntity<ClothesInStoreOrInStock> updateClothesInStock
+    ResponseEntity <ClothesInStoreOrInStock> updateClothesInStock
             (@PathVariable Long id, @Valid @RequestBody ClothesInStoreOrInStock clothesInStock) {
-        clothesInStock.setId(id);
-        log.info("Request to update clothes in Stock: {}", clothesInStock);
-        ClothesInStoreOrInStock result = stockService.createClothesInStock(clothesInStock);
+        log.info("Request to update clothes in StoreOrStock: {}", clothesInStock);
+        ClothesInStoreOrInStock result = stockService.updateClothesInStock(id, clothesInStock);
         return ResponseEntity.ok().body(result);
     }
 

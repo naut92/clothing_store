@@ -44,7 +44,7 @@ class StoreEdit extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('/api/store', {
+        await fetch((item.id) ? '/api/store/'+(item.id) : '/api/store', {
             method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -63,6 +63,7 @@ class StoreEdit extends Component {
             <Container>
                 {title}
                 <Form onSubmit={this.handleSubmit}>
+                    <Button color="primary" tag="submit">Move this item: {item.name} -> to stock</Button>{' '}
                     <FormGroup>
                         <Label for="name">Наименование</Label>
                         <Input type="text" name="name" id="name" value={item.name || ''}

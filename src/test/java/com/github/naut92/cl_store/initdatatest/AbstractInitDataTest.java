@@ -7,9 +7,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * @author Alimenkou Mikalai
@@ -17,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @ActiveProfiles("test")
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public abstract class AbstractInitDataTest<D> {
     private static long ID = 1;
 
@@ -31,4 +36,11 @@ public abstract class AbstractInitDataTest<D> {
 
     @Autowired
     protected D dao;
+
+    protected long addRecordToDatabase(String table, Map<String, Object> fields) {
+        long id = ID++;
+        Object[] params = Stream.concat(Stream.of(id), fields.values().stream()).toArray();
+        // jdbcTemplate.update("INSERT INTO " + table + " (id, " + String.join(", ", fields.keySet()) + ") VALUES (?" + StringUtils.repeat(", ?", fields.size()) + ")", params);
+        return id;
+    }
 }
