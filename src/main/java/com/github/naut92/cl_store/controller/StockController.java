@@ -62,6 +62,14 @@ public class StockController {
         return ResponseEntity.ok().body(result);
     }
 
+    @PutMapping("/stock/move/{id}")
+    ResponseEntity <ClothesInStoreOrInStock> moveClothesInStoreToStock
+            (@PathVariable Long id) {
+        log.info("Request to move clothes from Stock to -> Store: {}", id);
+        ClothesInStoreOrInStock result = stockService.moveClothesInStockToStore(id);
+        return ResponseEntity.ok().body(result);
+    }
+
     @DeleteMapping("/stock/{id}")
     public ResponseEntity<?> deleteClothesInStock (@PathVariable Long id) {
         log.info("Request to delete clothes in Stock: {}", id);

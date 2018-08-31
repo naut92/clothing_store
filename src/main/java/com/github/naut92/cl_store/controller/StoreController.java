@@ -63,6 +63,14 @@ public class StoreController {
         return ResponseEntity.ok().body(result);
     }
 
+    @PutMapping("/store/move/{id}")
+    ResponseEntity <ClothesInStoreOrInStock> moveClothesInStoreToStock
+            (@PathVariable Long id) {
+        log.info("Request to move clothes from Store to -> Stock: {}", id);
+        ClothesInStoreOrInStock result = storeService.moveClothesInStoreToStock(id);
+        return ResponseEntity.ok().body(result);
+    }
+
     @DeleteMapping("/store/{id}")
     public ResponseEntity<?> deleteClothesInStore(@PathVariable Long id) {
         log.info("Request to delete clothes in Store: {}", id);

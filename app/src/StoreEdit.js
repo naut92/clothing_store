@@ -26,7 +26,7 @@ class StoreEdit extends Component {
 
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const store = await (await fetch(`/api/store/${this.props.match.params.id}`)).json();
+            const store = await (await fetch(`/clothing_store/api/store/${this.props.match.params.id}`)).json();
             this.setState({item: store});
         }
     }
@@ -44,7 +44,7 @@ class StoreEdit extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch((item.id) ? '/api/store/'+(item.id) : '/api/store', {
+        await fetch((item.id) ? '/clothing_store/api/store/'+(item.id)  : '/clothing_store/api/store', {
             method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -63,7 +63,6 @@ class StoreEdit extends Component {
             <Container>
                 {title}
                 <Form onSubmit={this.handleSubmit}>
-                    <Button color="primary" tag="submit">Move this item: {item.name} -> to stock</Button>{' '}
                     <FormGroup>
                         <Label for="name">Наименование</Label>
                         <Input type="text" name="name" id="name" value={item.name || ''}
@@ -118,8 +117,8 @@ class StoreEdit extends Component {
                         </FormGroup>
                     </div>
                     <FormGroup>
-                        <Button color="primary" type="submit">Save</Button>{' '}
-                        <Button color="secondary" tag={Link} to="/store">Cancel</Button>
+                        <Button color="primary" type="submit">Сохранить</Button>{' '}
+                        <Button color="secondary" tag={Link} to="/store">Отмена</Button>
                     </FormGroup>
                 </Form>
             </Container>

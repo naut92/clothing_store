@@ -3,7 +3,7 @@ Spring Boot, REST api, JPA, H2, ReactJS -app
 
 Start project.
 
-in command line: 
+CLI: 
 $ cd app
 $ yarn start
 

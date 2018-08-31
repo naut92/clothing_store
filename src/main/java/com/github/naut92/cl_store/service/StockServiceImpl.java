@@ -80,4 +80,20 @@ public class StockServiceImpl implements StockService{
         }
         return clothesRepository.save(clothesInStock);
     }
+
+    @Override
+    public ClothesInStoreOrInStock moveClothesInStockToStore(Long id) {
+        Optional<StoreOrStock> storeOrStock = storeAndStockRepository.findById(id);
+        Optional <ClothesInStoreOrInStock> clothesToMove = clothesRepository.findById(id);
+        Collection<ClothesInStoreOrInStock> collectionClothes = new ArrayList<>();
+        if(storeOrStock.isPresent() && clothesToMove.isPresent()){
+            clothesToMove.get().setId(id);
+            storeOrStock.get().setId(id);
+            collectionClothes.add(clothesToMove.get());
+            storeOrStock.get().setStoreOrStock("store");
+            storeOrStock.get().setStoreOrStockByClothes(collectionClothes);
+            storeAndStockRepository.save(storeOrStock.get());
+        }
+        return clothesRepository.save(clothesToMove.get());
+    }
 }

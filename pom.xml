@@ -25,6 +25,7 @@
         <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
         <node.version>v10.6.0</node.version>
         <yarn.version>v1.8.0</yarn.version>
+        <start-class>com.github.naut92.cl_store.ClothingStoreApplication</start-class>
     </properties>
 
     <dependencies>
@@ -39,6 +40,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -60,12 +67,12 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <artifactId>spring-boot-starter-tomcat</artifactId-->
             <!-- for deploy to remote server:-->
             <!--scope>provided</scope-->
-        </dependency>
+        <!--/dependency-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -78,10 +85,19 @@
             <version>1.2.8</version>
             <scope>test</scope>
         </dependency>
+        <!--wild fly-->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
-        <plugins>
+        <!--name project for deploying in Enterprise Servers-->
+        <finalName>clothing_store</finalName>
+        <!--plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -89,7 +105,7 @@
                     <mainClass>com.github.naut92.cl_store.ClothingStoreApplication</mainClass>
                 </configuration>
             </plugin>
-        </plugins>
+        </plugins-->
     </build>
 
     <profiles>
@@ -173,6 +189,29 @@
                             </execution>
                         </executions>
                     </plugin>
+
+                    <!--plugin>
+                        <groupId>org.jboss.as.plugins</groupId>
+                        <artifactId>jboss-as-maven-plugin</artifactId>
+                        <version>7.9.Final</version>
+
+                        <executions>
+                            <execution>
+                                <id>jboss-deploy</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>jboss-undeploy</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>undeploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin-->
                 </plugins>
             </build>
             <properties>

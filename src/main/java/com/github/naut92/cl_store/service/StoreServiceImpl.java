@@ -16,12 +16,12 @@ public class StoreServiceImpl implements StoreService{
     @Autowired
     StoreAndStockRepository storeAndStockRepository;
     @Autowired
-    ClothesInStoreOrInStockRepository clothesInStoreOrInStockRepository;
+    ClothesInStoreOrInStockRepository clothesRepository;
 
     public StoreServiceImpl(StoreAndStockRepository storeAndStockRepository,
                             ClothesInStoreOrInStockRepository clothesInStoreOrInStockRepository) {
         this.storeAndStockRepository = storeAndStockRepository;
-        this.clothesInStoreOrInStockRepository = clothesInStoreOrInStockRepository;
+        this.clothesRepository = clothesInStoreOrInStockRepository;
     }
 
 
@@ -45,7 +45,7 @@ public class StoreServiceImpl implements StoreService{
 
     @Override
     public Optional<ClothesInStoreOrInStock> findByIdInStore(Long id) {
-        Optional<ClothesInStoreOrInStock> clothesInStore = clothesInStoreOrInStockRepository.findById(id);
+        Optional<ClothesInStoreOrInStock> clothesInStore = clothesRepository.findById(id);
         if(clothesInStore.isPresent()){
             for (StoreOrStock storeOrStock : clothesInStore.get().getClothesByStoreOrStock()){
                 if(storeOrStock.getStoreOrStock().equals("store")){
@@ -64,7 +64,7 @@ public class StoreServiceImpl implements StoreService{
         storeOrStock.setStoreOrStock("store");
         storeOrStock.setStoreOrStockByClothes(collectionClothes);
         storeAndStockRepository.save(storeOrStock);
-        return clothesInStoreOrInStockRepository.save(clothesInStore);
+        return clothesRepository.save(clothesInStore);
     }
 
     @Override
@@ -79,6 +79,22 @@ public class StoreServiceImpl implements StoreService{
             storeOrStock.get().setStoreOrStockByClothes(collectionClothes);
             storeAndStockRepository.save(storeOrStock.get());
         }
-        return clothesInStoreOrInStockRepository.save(clothesInStore);
+        return clothesRepository.save(clothesInStore);
+    }
+
+    @Override
+    public ClothesInStoreOrInStock moveClothesInStoreToStock(Long id) {
+        Optional<StoreOrStock> storeOrStock = storeAndStockRepository.findById(id);
+        Optional <ClothesInStoreOrInStock> clothesToMove = clothesRepository.findById(id);
+        Collection<ClothesInStoreOrInStock> collectionClothes = new ArrayList<>();
+        if(storeOrStock.isPresent() && clothesToMove.isPresent()){
+            clothesToMove.get().setId(id);
+            storeOrStock.get().setId(id);
+            collectionClothes.add(clothesToMove.get());
+            storeOrStock.get().setStoreOrStock("stock");
+            storeOrStock.get().setStoreOrStockByClothes(collectionClothes);
+            storeAndStockRepository.save(storeOrStock.get());
+        }
+        return clothesRepository.save(clothesToMove.get());
     }
 }

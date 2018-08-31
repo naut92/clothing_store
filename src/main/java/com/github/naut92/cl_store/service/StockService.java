@@ -12,4 +12,5 @@ public interface StockService {
     Optional<ClothesInStoreOrInStock> findByIdInStock(Long id);
     ClothesInStoreOrInStock createClothesInStock (ClothesInStoreOrInStock stock);
     ClothesInStoreOrInStock updateClothesInStock(Long id, ClothesInStoreOrInStock clothesInStock);
+    ClothesInStoreOrInStock moveClothesInStockToStore(Long id);
 }

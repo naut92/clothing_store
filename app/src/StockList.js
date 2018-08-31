@@ -9,18 +9,19 @@ class StockList extends Component {
         super(props);
         this.state = {stock: [], isLoading: true};
         this.remove = this.remove.bind(this);
+        this.move = this.move.bind(this);
     }
 
     componentDidMount() {
         this.setState({isLoading: true});
 
-        fetch('api/stock')
+        fetch('/clothing_store/api/stock')
             .then(response => response.json())
             .then(data => this.setState({stock: data, isLoading: false}));
     }
 
     async remove(id) {
-        await fetch(`/api/stock/${id}`, {
+        await fetch(`/clothing_store/api/stock/${id}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -29,6 +30,19 @@ class StockList extends Component {
         }).then(() => {
             let updatedStock = [...this.state.stock].filter(i => i.id !== id);
             this.setState({stock: updatedStock});
+        });
+    }
+
+    async move(id) {
+        await fetch(`/clothing_store/api/stock/move/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            let updatedStock = [...this.state.store].filter(i => i.id !== id);
+            this.setState({store: updatedStock});
         });
     }
 
@@ -58,8 +72,9 @@ class StockList extends Component {
                 </td>
                 <td>
                     <ButtonGroup>
-                        <Button size="sm" color="primary" tag={Link} to={"/stock/" + clothes.id}>Edit</Button>
-                        <Button size="sm" color="danger" onClick={() => this.remove(clothes.id)}>Delete</Button>
+                        <Button size="sm" color="primary" tag={Link} to={"/stock/" + clothes.id}>Изменить</Button>
+                        <Button size="sm" color="danger" onClick={() => this.remove(clothes.id)}>Удалить</Button>
+                        <Button size="sm" color="warning" onClick={() => this.move(clothes.id)}>Move to Store</Button>
                     </ButtonGroup>
                 </td>
             </tr>
