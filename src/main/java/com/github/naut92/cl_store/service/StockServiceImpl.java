@@ -19,9 +19,9 @@ public class StockServiceImpl implements StockService{
     ClothesInStoreOrInStockRepository clothesRepository;
 
     public StockServiceImpl(StoreAndStockRepository storeAndStockRepository,
-                            ClothesInStoreOrInStockRepository clothesInStoreOrInStockRepository) {
+                            ClothesInStoreOrInStockRepository clothesRepository) {
         this.storeAndStockRepository = storeAndStockRepository;
-        this.clothesRepository = clothesInStoreOrInStockRepository;
+        this.clothesRepository = clothesRepository;
     }
 
     @Override
