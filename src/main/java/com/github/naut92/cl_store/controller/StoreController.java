@@ -1,7 +1,6 @@
 package com.github.naut92.cl_store.controller;
 
 import com.github.naut92.cl_store.model.ClothesInStoreOrInStock;
-import com.github.naut92.cl_store.repository.ClothesInStoreOrInStockRepository;
 import com.github.naut92.cl_store.service.ClothesService;
 import com.github.naut92.cl_store.service.StoreService;
 import org.slf4j.Logger;
