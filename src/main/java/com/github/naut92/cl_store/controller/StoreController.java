@@ -40,7 +40,7 @@ public class StoreController {
     }
 
     @GetMapping("/store/{id}")
-    ResponseEntity<?> getClothesInStore(@PathVariable Long id) {
+    ResponseEntity<?> getClothesInStoreById(@PathVariable Long id) {
         Optional<ClothesInStoreOrInStock> clothes = storeService.findByIdInStore(id);
         return clothes.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

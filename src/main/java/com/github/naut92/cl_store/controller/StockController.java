@@ -32,14 +32,13 @@ public class StockController {
         this.clothesService = clothesService;
     }
 
-
     @GetMapping("/stock")
     public Collection<ClothesInStoreOrInStock> getAllClothesInStock(){
         return stockService.getAllClothesInStock();
     }
 
     @GetMapping("/stock/{id}")
-    ResponseEntity<?> getClothesInStock(@PathVariable Long id) {
+    ResponseEntity<?> getClothesInStockById(@PathVariable Long id) {
         Optional<ClothesInStoreOrInStock> clothes = stockService.findByIdInStock(id);
         return clothes.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

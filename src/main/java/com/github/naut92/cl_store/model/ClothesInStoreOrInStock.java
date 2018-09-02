@@ -46,28 +46,4 @@ public class ClothesInStoreOrInStock implements Serializable {
       //foreign key for other side - StoreOrStock Entity in clothes_all table
      inverseJoinColumns = @JoinColumn(name = "store_stok_id"))
      private Collection<StoreOrStock> clothesByStoreOrStock;
-
-    //@OneToMany(mappedBy = "clothesBySize")
-    //private Collection<Size> clothesBySize;
-/*
-    @OneToMany(mappedBy = "clothesByColor")
-    private Collection<Color> clothesByColor;
-*/
-    //@OneToMany(mappedBy = "clothesByType")
-    //private Collection<Type> clothesByType;
-
-
-
-/*
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    private StoreOrStock storeOrStockByClothes;
-
-    /*
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "name", referencedColumnName = "clothes_name", insertable = false, updatable = false)
-    private Stock stockByClothes;
-*/
 }

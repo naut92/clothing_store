@@ -41,8 +41,8 @@ class StockList extends Component {
                 'Content-Type': 'application/json'
             }
         }).then(() => {
-            let updatedStock = [...this.state.store].filter(i => i.id !== id);
-            this.setState({store: updatedStock});
+            let updatedStock = [...this.state.stock].filter(i => i.id !== id);
+            this.setState({stock: updatedStock});
         });
     }
 

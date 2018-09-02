@@ -16,49 +16,50 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class StoreControllerTest {
+public class StockControllerTest {
 
     @Autowired
     private TestRestTemplate template;
 
-    private static final String URI = "/api/store/";
+    private static final String URI = "/api/stock/";
 
     @Test
-    public void getAllClothesInStore() {
+    public void getAllClothesInStock() {
         ResponseEntity<List<ClothesInStoreOrInStock>> clothesResponse = template.exchange(URI,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<ClothesInStoreOrInStock>>() {});
-        List<ClothesInStoreOrInStock> clothesInStore =clothesResponse.getBody();
-        for (ClothesInStoreOrInStock clothes : clothesInStore){
+        List<ClothesInStoreOrInStock> clothesInStock =clothesResponse.getBody();
+        for (ClothesInStoreOrInStock clothes : clothesInStock){
             System.out.println(clothes.getName());
         }
-        Assert.assertNotNull(clothesInStore);
+        Assert.assertNotNull(clothesInStock);
     }
 
     @Test
-    public void getClothesInStoreById() {
+    public void getClothesInStockById() {
         ResponseEntity<ClothesInStoreOrInStock> responseEntity = template.getForEntity(URI + "{id}",
-                ClothesInStoreOrInStock.class, new Long(1));
+                ClothesInStoreOrInStock.class, new Long(2));
         int status = responseEntity.getStatusCodeValue();
         ClothesInStoreOrInStock resultById = responseEntity.getBody();
 
         Assert.assertEquals("Incorrect Response Status", HttpStatus.OK.value(), status);
         Assert.assertNotNull(resultById);
-        Assert.assertEquals(1l, resultById.getId().longValue());
+        Assert.assertEquals(2l, resultById.getId().longValue());
     }
 
     @Test
-    public void createClothesInStore(){
+    public void createClothesInStock() {
         HttpEntity<Object> article = getHttpEntity("{\"name\": \"clothes 1\", \"size\": \"42\" }");
         ResponseEntity<ClothesInStoreOrInStock> resultAsset = template.postForEntity(URI, article, ClothesInStoreOrInStock.class);
         Assert.assertNotNull(resultAsset.getBody().getId());
     }
 
     @Test
-    public void updateClothesInStore() {
+    public void updateClothesInStock() {
         ClothesInStoreOrInStock clothes = new ClothesInStoreOrInStock();
         Long idClothes = 4L;
         clothes.setId(idClothes);
@@ -68,10 +69,10 @@ public class StoreControllerTest {
         clothes.setColor("test color");
         clothes.setType("джинсы!");
         clothes.setDescription("бла-бла-бла");
-        StoreOrStock store = new StoreOrStock();
-        store.setStoreOrStock("store");
+        StoreOrStock stock = new StoreOrStock();
+        stock.setStoreOrStock("stock");
         Collection<StoreOrStock> collection = new ArrayList<>();
-        collection.add(store);
+        collection.add(stock);
         clothes.setClothesByStoreOrStock(collection);
 
         HttpEntity<ClothesInStoreOrInStock> requestEntity = new HttpEntity<>(clothes);
@@ -83,7 +84,7 @@ public class StoreControllerTest {
     }
 
     @Test
-    public void deleteClothesInStore() {
+    public void deleteClothesInStock() {
         ResponseEntity<Void> responseEntity = template.exchange(URI + "{id}", HttpMethod.DELETE,
                 null, Void.class, new Long(6));
         int status = responseEntity.getStatusCodeValue();
@@ -96,5 +97,4 @@ public class StoreControllerTest {
         headers.setContentType(APPLICATION_JSON);
         return new HttpEntity<>(body, headers);
     }
-
 }
