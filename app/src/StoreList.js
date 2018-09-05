@@ -15,13 +15,13 @@ class StoreList extends Component {
     componentDidMount() {
         this.setState({isLoading: true});
 
-        fetch('/clothing_store/api/store')
+        fetch('/api/store')
             .then(response => response.json())
             .then(data => this.setState({store: data, isLoading: false}));
     }
 
     async remove(id) {
-        await fetch(`/clothing_store/api/store/${id}`, {
+        await fetch(`/api/store/${id}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -34,7 +34,7 @@ class StoreList extends Component {
     }
 
     async move(id) {
-        await fetch(`/clothing_store/api/store/move/${id}`, {
+        await fetch(`/api/store/move/${id}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',

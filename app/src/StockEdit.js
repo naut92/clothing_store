@@ -25,7 +25,7 @@ class StockEdit extends Component {
 
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const stock = await (await fetch(`/clothing_store/api/stock/${this.props.match.params.id}`)).json();
+            const stock = await (await fetch(`/api/stock/${this.props.match.params.id}`)).json();
             this.setState({item: stock});
         }
     }
@@ -43,7 +43,7 @@ class StockEdit extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch((item.id) ? '/clothing_store/api/stock/'+(item.id) : '/clothing_store/api/stock', {
+        await fetch((item.id) ? '/api/stock/'+(item.id) : '/api/stock', {
             method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',

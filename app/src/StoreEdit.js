@@ -14,6 +14,8 @@ class StoreEdit extends Component {
         description: ''
     };
 
+
+
     constructor(props) {
         super(props);
         this.state = {
@@ -26,7 +28,7 @@ class StoreEdit extends Component {
 
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const store = await (await fetch(`/clothing_store/api/store/${this.props.match.params.id}`)).json();
+            const store = await (await fetch(`/api/store/${this.props.match.params.id}`)).json();
             this.setState({item: store});
         }
     }
@@ -44,7 +46,7 @@ class StoreEdit extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch((item.id) ? '/clothing_store/api/store/'+(item.id)  : '/clothing_store/api/store', {
+        await fetch((item.id) ? '/api/store/'+(item.id)  : '/api/store', {
             method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',
