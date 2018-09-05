@@ -5,10 +5,10 @@ GRUD-app
 
 Start project.
 
-CLI: 
+for dev in CLI: 
 $ cd app
 $ yarn start
+open in your browser: http://localhost:3000
 
 run: ./mvnw spring-boot:run -Pprod
 
-open in your browser: http://localhost:3000
