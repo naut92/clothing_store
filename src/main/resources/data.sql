@@ -31,4 +31,3 @@ INSERT INTO clothes_all (clothes_id, store_stok_id) VALUES
 (7, 7),
 (8, 8),
 (9, 9);
-
