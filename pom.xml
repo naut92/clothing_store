@@ -64,12 +64,13 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.integralblue/log4jdbc-spring-boot-starter -->
+        <!-- For dev only!!! comment out in prod -->
         <dependency>
             <groupId>com.integralblue</groupId>
             <artifactId>log4jdbc-spring-boot-starter</artifactId>
             <version>1.0.2</version>
         </dependency>
+        <!-- end -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
